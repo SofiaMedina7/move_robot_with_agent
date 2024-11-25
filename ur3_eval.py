@@ -47,7 +47,10 @@ cfg_ppo = PPO_DEFAULT_CONFIG.copy()
 cfg_ppo["random_timesteps"] = 0
 cfg_ppo["learning_starts"] = 0
 cfg_ppo["state_preprocessor"] = RunningStandardScaler
-cfg_ppo["state_preprocessor_kwargs"] = {"size": env.observation_space, "device": device}
+cfg_ppo["state_preprocessor_kwargs"] = {"size": env.observation_space.shape, "device": device}
+# Optional: Configure experiment logging if needed
+cfg_ppo["experiment"]["write_interval"] = 32
+cfg_ppo["experiment"]["checkpoint_interval"] = 0
 
 # Create agent
 agent = PPO(
@@ -59,16 +62,9 @@ agent = PPO(
     device=device
 )
 
-# Load model
-print("Loading model...")
-checkpoint = torch.load("best_agent.pt")
-models_ppo["policy"].load_state_dict(checkpoint["policy"])
-
-# Update preprocessor
-cfg_ppo["state_preprocessor_kwargs"].update({
-    "running_mean": checkpoint["state_preprocessor"]["running_mean"],
-    "running_variance": checkpoint["state_preprocessor"]["running_variance"],
-})
+# Load the agent using the agent.load() method
+print("Loading agent...")
+agent.load("best_agent.pt")
 
 # Configure trainer
 cfg_trainer = {"timesteps": 1000, "headless": True}
