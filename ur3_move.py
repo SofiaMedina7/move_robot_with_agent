@@ -56,10 +56,10 @@ class RobotMover(Node):
         target_pose.pose.position.z = z
 
         # Set fixed orientation (upright)
-        target_pose.pose.orientation.x = 0.0
+        target_pose.pose.orientation.x = 1.0
         target_pose.pose.orientation.y = 0.0
         target_pose.pose.orientation.z = 0.0
-        target_pose.pose.orientation.w = 1.0
+        target_pose.pose.orientation.w = 0.0
 
         # Log the target pose for debugging
         self.get_logger().info(f"Planning target pose: {target_pose}")
@@ -82,10 +82,10 @@ class RobotMover(Node):
         orientation_constraint = OrientationConstraint()
         orientation_constraint.header.frame_id = "base_link"
         orientation_constraint.link_name = "tool0"
-        orientation_constraint.orientation.x = 0.0
+        orientation_constraint.orientation.x = 1.0
         orientation_constraint.orientation.y = 0.0
         orientation_constraint.orientation.z = 0.0
-        orientation_constraint.orientation.w = 1.0  # Upright orientation
+        orientation_constraint.orientation.w = 0.0  # Upright orientation
         orientation_constraint.absolute_x_axis_tolerance = 0.1  # Tolerances for orientation
         orientation_constraint.absolute_y_axis_tolerance = 0.1
         orientation_constraint.absolute_z_axis_tolerance = 0.1
